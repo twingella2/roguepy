@@ -7,6 +7,7 @@ class GameView:
         self.tile_size = 30
 
     def draw_dungeon(self, dungeon, camera_x, camera_y):
+        # ダンジョンを描画する関数
         for y, row in enumerate(dungeon.map):
             for x, tile in enumerate(row):
                 if tile == '#':
@@ -17,6 +18,6 @@ class GameView:
                 elif tile == '>':
                     pygame.draw.rect(self.screen, (255, 0, 0), (x * self.tile_size - camera_x, y * self.tile_size - camera_y, self.tile_size, self.tile_size))
 
-def draw(self, player_pos, camera_x, camera_y):
-    pygame.draw.rect(self.screen, (255, 255, 255), (player_pos[0] - camera_x, player_pos[1] - camera_y, 10, 10))
-
+    def draw(self, player_pos, camera_x, camera_y):
+        # プレイヤーを描画する関数
+        pygame.draw.rect(self.screen, (255, 255, 255), (player_pos[0] - camera_x, player_pos[1] - camera_y, 10, 10))
