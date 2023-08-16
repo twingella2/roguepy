@@ -5,6 +5,7 @@ class Dungeon:
         self.level = 1
         self.map, self.start_pos = self.generate_map()
         self.next_map, self.next_start_pos = self.generate_map()
+        self.current_floor = 1
 
     def generate_map(self):
         map_width, map_height = 200, 180
@@ -69,6 +70,7 @@ class Dungeon:
 
     def next_level(self):
         self.level += 1
+        self.current_floor += 1
         self.map = self.generate_map()
         self.map, self.start_pos = self.next_map, self.next_start_pos # 次の階層に移動
         self.next_map, self.next_start_pos = self.generate_map() # 新しい次の階層を生成

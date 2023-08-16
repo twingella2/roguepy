@@ -1,4 +1,6 @@
-class Player:
+import pygame
+
+class Player():
     def __init__(self):
         self.level = 1
         self.hp = 100

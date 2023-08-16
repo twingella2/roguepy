@@ -4,13 +4,12 @@ import sys
 class InputController:
     def handle_input(self, player_pos, player_speed, dungeon): # dungeonを追加
         keys = pygame.key.get_pressed()
+        new_pos = player_pos.copy()
 
         # キー入力で移動
-        new_x, new_y = player_pos
-        # new_x = player_pos[0]
-        # new_y = player_pos[1]
+        new_x = int(self.player_pos[0] + x_move * player_speed)
+        new_y = int(self.player_pos[1] + y_move * player_speed)
 
-        new_pos = player_pos.copy()
 
         if keys[pygame.K_LEFT]:
             new_x -= player_speed

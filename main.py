@@ -1,3 +1,5 @@
+import pygame
+
 from controllers.game_controller import GameController
 
 def main():
