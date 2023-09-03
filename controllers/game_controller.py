@@ -26,6 +26,17 @@ class GameController:
         self.player = Player()
         self.player_pos = [self.dungeon.start_pos[0] * 30, self.dungeon.start_pos[1] * 30]
         self.camera_x, self.camera_y = 0, 0
+        pygame.joystick.init()
+
+        self.joystick = None
+        if pygame.joystick.get_count() > 0:
+            self.joystick = pygame.joystick.Joystick(0)
+            self.joystick.init()
+
+        pygame.joystick.init()
+        self.joystick = pygame.joystick.Joystick(0) if pygame.joystick.get_count() > 0 else None
+        if self.joystick:
+            self.joystick.init()
 
         class GameController:
         # 既存のコード
@@ -58,6 +69,15 @@ class GameController:
     def title_screen(self):
         self.title_view.draw()
         for event in pygame.event.get():
+            if event.type == pygame.JOYBUTTONDOWN:
+                # ジョイスティックのボタン入力処理
+                # 例: event.button でボタン番号を取得できます
+                pass
+            elif event.type == pygame.JOYHATMOTION:
+                # ジョイスティックの十字キー入力処理
+                # 例: event.value で方向を取得できます (例: (0, 1) で上方向)
+                pass
+            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
                     self.title_view.selected_option = (self.title_view.selected_option + 1) % 3
@@ -74,6 +94,11 @@ class GameController:
 
     def game_logic(self, player_speed):
         self.input_controller.handle_input(self.player_pos, player_speed, self.dungeon)
+        new_x, new_y = self.input_controller.handle_input(self.player_pos, player_speed, self.dungeon)
+
+        # 壁との衝突判定
+        if not self.dungeon.is_wall(new_x // 30, new_y // 30):
+            self.player_pos[0], self.player_pos[1] = new_x, new_y
 
         # プレイヤーのステータスの描画
         self.player.draw_status(self.screen)
@@ -88,8 +113,8 @@ class GameController:
         self.camera_x = self.player_pos[0] - 400
         self.camera_y = self.player_pos[1] - 300
 
-        x_index = self.player_pos[0] // 30
-        y_index = self.player_pos[1] // 30
+        x_index = int(self.player_pos[0] // 30)
+        y_index = int(self.player_pos[1] // 30)
 
         # 階段にふれる前に範囲外アクセスをチェックする
         if 0 <= x_index < len(self.dungeon.map[0]) and 0 <= y_index < len(self.dungeon.map):
